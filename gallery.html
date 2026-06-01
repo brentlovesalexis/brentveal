@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — Brent Veal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header id="header">
+    <div class="header-inner">
+      <a href="index.html" class="site-title">Brent Veal</a>
+      <button class="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
+      <nav>
+        <a href="index.html#demo-reel">Demo Reel</a>
+        <a href="index.html">Welcome</a>
+        <a href="experience.html">Experience</a>
+        <a href="contact.html">Contact</a>
+        <a href="gallery.html" class="active">Gallery</a>
+        <a href="https://www.imdb.com/name/nm2477524/" target="_blank" rel="noopener">IMDB Credits</a>
+        <a href="https://www.linkedin.com/in/brent-veal-b452b13/" target="_blank" rel="noopener">LinkedIn</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="inner-page">
+    <div class="page-hero">
+      <div class="page-hero-overlay"></div>
+      <h1>Gallery</h1>
+    </div>
+
+    <div class="container content-section">
+      <p class="gallery-note">VFX compositing work samples. Replace the placeholder items below with your actual images by adding them to an <code>images/</code> folder and updating the <code>src</code> attributes.</p>
+
+      <div class="gallery-grid" id="gallery">
+        <!-- Replace src="" with your actual image paths, e.g. src="images/RSA_Meteor.jpg" -->
+        <div class="gallery-item" data-index="0">
+          <div class="gallery-placeholder">RSA_Meteor.jpg</div>
+        </div>
+        <div class="gallery-item" data-index="1">
+          <div class="gallery-placeholder">FTL_050_010.jpg</div>
+        </div>
+        <div class="gallery-item" data-index="2">
+          <div class="gallery-placeholder">PBB_104_001_065.jpg</div>
+        </div>
+        <div class="gallery-item" data-index="3">
+          <div class="gallery-placeholder">FSF_116_036_040_00126.jpg</div>
+        </div>
+        <div class="gallery-item" data-index="4">
+          <div class="gallery-placeholder">FTL_015_010.jpg</div>
+        </div>
+        <div class="gallery-item" data-index="5">
+          <div class="gallery-placeholder">CTM_406_034_040.jpg</div>
+        </div>
+        <div class="gallery-item" data-index="6">
+          <div class="gallery-placeholder">SBT_080_071.jpg</div>
+        </div>
+        <div class="gallery-item" data-index="7">
+          <div class="gallery-placeholder">TRA_307_081_020.jpg</div>
+        </div>
+        <div class="gallery-item" data-index="8">
+          <div class="gallery-placeholder">CTM_Drone.JPG</div>
+        </div>
+        <div class="gallery-item" data-index="9">
+          <div class="gallery-placeholder">TWG_046_1000.jpg</div>
+        </div>
+      </div>
+
+      <!-- Lightbox -->
+      <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightbox-close">&times;</button>
+        <button class="lightbox-prev" id="lightbox-prev">&#8249;</button>
+        <div class="lightbox-img-wrap">
+          <img src="" alt="" id="lightbox-img">
+          <div class="lightbox-placeholder" id="lightbox-placeholder"></div>
+        </div>
+        <button class="lightbox-next" id="lightbox-next">&#8250;</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="#header" class="back-to-top">Back To Top ↑</a>
+    <p>&copy; 2024 Brent Veal</p>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script>
+    const items = document.querySelectorAll('.gallery-item');
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    const lbPlaceholder = document.getElementById('lightbox-placeholder');
+    let current = 0;
+
+    function openLightbox(index) {
+      current = index;
+      const item = items[index];
+      const img = item.querySelector('img');
+      if (img) {
+        lbImg.src = img.src;
+        lbImg.alt = img.alt;
+        lbImg.style.display = 'block';
+        lbPlaceholder.style.display = 'none';
+      } else {
+        lbImg.style.display = 'none';
+        lbPlaceholder.textContent = item.querySelector('.gallery-placeholder').textContent;
+        lbPlaceholder.style.display = 'flex';
+      }
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    items.forEach(item => {
+      item.addEventListener('click', () => openLightbox(parseInt(item.dataset.index)));
+    });
+
+    document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+    document.getElementById('lightbox-prev').addEventListener('click', () => openLightbox((current - 1 + items.length) % items.length));
+    document.getElementById('lightbox-next').addEventListener('click', () => openLightbox((current + 1) % items.length));
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') openLightbox((current - 1 + items.length) % items.length);
+      if (e.key === 'ArrowRight') openLightbox((current + 1) % items.length);
+    });
+  </script>
+</body>
+</html>
